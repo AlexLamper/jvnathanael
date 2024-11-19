@@ -9,7 +9,7 @@ type TableRow = {
   
   const BestuurTable = ({ rows }: Props) => {
     return (
-      <section id="relume" className="px-4 py-16 md:py-24 lg:py-28">
+      <section id="relume" className="lg:px-4 px-0 py-16 md:py-24 lg:py-28">
         <div className="container mx-auto">
           <h2 className="text-center text-4xl font-bold mb-8 text-[#3A3C71]">Bestuur</h2>
   

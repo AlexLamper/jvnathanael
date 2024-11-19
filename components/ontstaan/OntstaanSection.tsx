@@ -17,7 +17,7 @@ type ImageProps = {
       ...props,
     } as Props;
     return (
-      <section id="relume" className="px-[5%] py-16 md:py-24 lg:py-28 text-black">
+      <section id="relume" className="lg:px-[5%] px-[1%] py-16 md:py-24 lg:py-28 text-black">
         <div className="container">
           <div className="grid grid-cols-1 items-start gap-y-12 md:grid-cols-2 md:gap-x-12 lg:gap-x-20">
             <div>

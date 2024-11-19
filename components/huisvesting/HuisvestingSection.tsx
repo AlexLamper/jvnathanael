@@ -30,7 +30,7 @@ export const HuisvestingSection = (props: HuisvestingSectionProps) => {
   } as Props;
 
   return (
-    <section id="relume" className="px-[5%] py-16 md:py-24 lg:py-28 text-black">
+    <section id="relume" className="lg:px-[5%] px-[1%] py-16 md:py-24 lg:py-28 text-black">
       <div className="container">
         <div className="mb-12 md:mb-18 lg:mb-20">
           <div className="mx-auto max-w-lg text-center">

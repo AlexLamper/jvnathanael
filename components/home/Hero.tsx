@@ -24,7 +24,7 @@ export const Header127 = (props: Header127Props) => {
     ...props,
   } as Props;
   return (
-    <section id="relume" className="px-[5%] py-8 md:py-9 lg:py-10">
+    <section id="relume" className="lg:px-[5%] px-0 py-8 md:py-9 lg:py-10">
       <div className="container">
         <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16">
           <div>
@@ -39,7 +39,7 @@ export const Header127 = (props: Header127Props) => {
             </div>
           </div>
           <div className="relative flex w-full">
-            <div className="mx-[15%] w-full">
+            <div className="lg:mx-[15%] w-full">
               <img
                 src={secondImage.src}
                 className="aspect-[2/3] size-full object-cover"
