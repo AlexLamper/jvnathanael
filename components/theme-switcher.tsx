@@ -16,10 +16,13 @@ const ThemeSwitcher = () => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
-  // useEffect only runs on the client, so now we can safely show the UI
+  // Set the light theme as the default when the component mounts
   useEffect(() => {
+    if (!theme) {
+      setTheme("light");
+    }
     setMounted(true);
-  }, []);
+  }, [theme, setTheme]);
 
   if (!mounted) {
     return null;
