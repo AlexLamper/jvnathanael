@@ -1,9 +1,20 @@
-import { createClient } from '@/utils/supabase/server';
-import Link from 'next/link';
+'use client'
 
-export default async function Activiteiten() {
-  const supabase = await createClient();
-  const { data: activiteiten } = await supabase.from("activiteiten").select();
+import { createClient } from '@/utils/supabase/client'
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+
+export default function Activiteiten() {
+  const [activiteiten, setActiviteiten] = useState<any[] | null>(null)
+  const supabase = createClient()
+
+  useEffect(() => {
+    const getData = async () => {
+      const { data } = await supabase.from('activiteiten').select()
+      setActiviteiten(data)
+    }
+    getData()
+  }, [])
 
   return (
     <section className="container lg:max-w-[90%] max-w-[95%] mx-auto py-20 min-h-screen">
@@ -29,5 +40,5 @@ export default async function Activiteiten() {
         ))}
       </div>
     </section>
-  );
+  )
 }

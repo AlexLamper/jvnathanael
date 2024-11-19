@@ -1,0 +1,4 @@
+TODO
+-----
+
+- Instead of using the /protected route, change it to the /admin route, this way when you log in to an account as an admin, you only have access to certain stuff. 
