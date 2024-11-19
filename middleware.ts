@@ -2,6 +2,16 @@ import { type NextRequest } from "next/server";
 import { updateSession } from "@/utils/supabase/middleware";
 
 export async function middleware(request: NextRequest) {
+  // Get the current URL
+  const url = request.nextUrl.clone();
+  
+  // Check if the request is for the homepage (or any other public routes)
+  if (url.pathname === "/") {
+    // Allow access to the homepage without checking if the user is logged in
+    return;
+  }
+
+  // Otherwise, handle session update for other routes
   return await updateSession(request);
 }
 

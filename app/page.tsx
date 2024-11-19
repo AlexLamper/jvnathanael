@@ -1,7 +1,7 @@
 import Hero from '../components/home/Hero';
 import CTA from '../components/home/CTA';
-import HomeEvents from '../components/home/HomeEvents';
 import Space from '@/components/common/Spacing';
+import Activiteiten from '@/components/activiteiten/Activiteiten';
 
 export default async function Index() {
   return (
@@ -10,7 +10,7 @@ export default async function Index() {
         {/* Header Section */}
         <Hero />
         <CTA />
-        <HomeEvents />
+        <Activiteiten />
         <Space height="50px" />
       </div>
     </>
