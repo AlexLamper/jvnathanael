@@ -1,99 +1,85 @@
-'use client';
+'use client'
 
-import { createClient } from '@/utils/supabase/client';
-import { useState, useEffect } from 'react';
+import { createClient } from '@/utils/supabase/client'
+import { useState, useEffect } from 'react'
 
-export default function ActiviteitDetails({
-  params,
-}: {
-  params: Promise<{ activiteitId: string }>;
-}) {
-  const supabase = createClient();
+export default function ActiviteitDetails({ params }: { params: Promise<{ activiteitId: string }> }) {
+  const supabase = createClient()
 
-  // State management
-  const [activiteitId, setActiviteitId] = useState<string | null>(null);
-  const [activiteit, setActiviteit] = useState<any | null>(null);
-  const [userName, setUserName] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [successMessage, setSuccessMessage] = useState<string>('');
+  const [activiteitId, setActiviteitId] = useState<string | null>(null)
+  const [activiteit, setActiviteit] = useState<any | null>(null)
+  const [participants, setParticipants] = useState<any[] | null>(null) // Define participants state
+  const [userName, setUserName] = useState<string>('')
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [successMessage, setSuccessMessage] = useState<string>('')
 
-  // Resolve the `params` prop to set `activiteitId`
+  // Fetch activity details
   useEffect(() => {
-    params.then((resolvedParams) => {
-      setActiviteitId(resolvedParams.activiteitId);
-    });
-  }, [params]);
+    params.then((resolvedParams) => setActiviteitId(resolvedParams.activiteitId))
+  }, [params])
 
-  // Fetch activity details based on `activiteitId`
   useEffect(() => {
     if (activiteitId) {
       const fetchActiviteit = async () => {
-        const { data, error } = await supabase
+        // Fetch activity details
+        const activiteitResponse = await supabase
           .from('activiteiten')
           .select()
           .eq('id', activiteitId)
-          .single();
+          .single()
+        setActiviteit(activiteitResponse.data)
 
-        if (error) {
-          console.error('Error fetching activiteit:', error);
-        } else {
-          setActiviteit(data);
-        }
-      };
-
-      fetchActiviteit();
+        // Fetch participants
+        const participantsResponse = await supabase
+          .from('activiteiten_participants')
+          .select('participant_name') // Adjust column name if different
+          .eq('activiteit_id', activiteitId)
+        setParticipants(participantsResponse.data || [])
+      }
+      fetchActiviteit()
     }
-  }, [activiteitId, supabase]);
+  }, [activiteitId])
 
-  // Handle user sign-up
+  // Handle sign-up (POST request using Supabase)
   const handleSignUp = async () => {
     if (!userName.trim()) {
-      alert('Please enter your name.');
-      return;
+      alert('Please enter your name.')
+      return
     }
 
-    setIsLoading(true);
+    setIsLoading(true)
 
     try {
-      // Update participants in the database
-      const updatedParticipants = [...(activiteit?.participants || []), userName];
-      const { error: updateError } = await supabase
-        .from('activiteiten')
-        .update({ participants: updatedParticipants })
-        .eq('id', activiteitId);
+      // Insert new participant into the `activiteiten_participants` table
+      const { data, error } = await supabase
+        .from('activiteiten_participants')
+        .insert({
+          participant_name: userName,
+          activiteit_id: activiteitId,
+        })
 
-      if (updateError) {
-        console.error('Error updating participants:', updateError);
-        alert('An error occurred while signing up. Please try again.');
-        return;
+      if (error) {
+        console.error('Error adding participant:', error)
+        alert('An error occurred while signing up. Please try again.')
+        return
       }
 
-      // Fetch the updated activiteit data
-      const { data: updatedActiviteit, error: fetchError } = await supabase
-        .from('activiteiten')
-        .select()
-        .eq('id', activiteitId)
-        .single();
+      console.log('Participant added successfully:', data)
 
-      if (fetchError) {
-        console.error('Error fetching updated activiteit:', fetchError);
-        alert('An error occurred while refreshing data. Please try again.');
-        return;
-      }
-
-      setSuccessMessage('You have successfully signed up!');
-      setActiviteit(updatedActiviteit);
-      setUserName(''); // Clear input
+      // Update the participants list locally
+      setParticipants((prev) => [...(prev || []), { participant_name: userName }])
+      setSuccessMessage('You have successfully signed up!')
+      setUserName('') // Clear the input field
     } catch (err) {
-      console.error('Unexpected error:', err);
-      alert('An unexpected error occurred. Please try again.');
+      console.error('Unexpected error:', err)
+      alert('An unexpected error occurred. Please try again.')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   if (!activiteit) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>
   }
 
   return (
@@ -104,9 +90,9 @@ export default function ActiviteitDetails({
         <strong>Datum:</strong> {new Date(activiteit.date).toLocaleDateString()}
       </p>
       <p className="text-sm text-gray-500 mb-4">
-        <strong>Participants ({activiteit.participants?.length || 0}):</strong>{' '}
-        {activiteit.participants?.length > 0
-          ? activiteit.participants.join(', ')
+        <strong>Participants ({participants?.length || 0}):</strong>{' '}
+        {participants && participants.length > 0
+          ? participants.map((p) => p.participant_name).join(', ')
           : 'No participants yet'}
       </p>
 
@@ -131,5 +117,5 @@ export default function ActiviteitDetails({
         {successMessage && <p className="text-green-600 mt-4">{successMessage}</p>}
       </div>
     </section>
-  );
+  )
 }
