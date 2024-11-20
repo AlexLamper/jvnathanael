@@ -10,9 +10,40 @@ export default function Activiteiten() {
 
   useEffect(() => {
     const getData = async () => {
-      const { data } = await supabase.from('activiteiten').select()
-      setActiviteiten(data)
+      // Fetch activities and their participant counts
+      const { data: activiteitenData, error: activiteitenError } = await supabase
+        .from('activiteiten')
+        .select('*')
+
+      if (activiteitenError) {
+        console.error('Error fetching activiteiten:', activiteitenError)
+        return
+      }
+
+      // Fetch participants for all activities
+      const { data: participantsData, error: participantsError } = await supabase
+        .from('activiteiten_participants')
+        .select('activiteit_id, participant_name')
+
+      if (participantsError) {
+        console.error('Error fetching participants:', participantsError)
+        return
+      }
+
+      // Add participant count to each activity
+      const activiteitenWithParticipants = activiteitenData.map((activiteit) => {
+        const activiteitParticipants = participantsData?.filter(
+          (p) => p.activiteit_id === activiteit.id
+        )
+        return {
+          ...activiteit,
+          participants: activiteitParticipants || [],
+        }
+      })
+
+      setActiviteiten(activiteitenWithParticipants)
     }
+
     getData()
   }, [])
 
@@ -29,7 +60,10 @@ export default function Activiteiten() {
             <p className="text-gray-700 mb-4">{activiteit.description}</p>
             <p className="text-sm text-gray-500">Datum: {new Date(activiteit.date).toLocaleDateString()}</p>
             <p className="text-sm text-gray-500">
-              <strong>{activiteit.participants?.length || 0}</strong> deelnemers
+              <strong>{activiteit.participants.length}</strong> deelnemers:{" "}
+              {activiteit.participants.length > 0
+                ? activiteit.participants.map((p: any) => p.participant_name).join(', ')
+                : 'Geen deelnemers'}
             </p>
             <Link href={`/activiteiten/${activiteit.id}`} passHref>
               <button className="mt-4 px-6 py-2 bg-[#3A3C71] text-white rounded-md hover:bg-[#323464] transition">

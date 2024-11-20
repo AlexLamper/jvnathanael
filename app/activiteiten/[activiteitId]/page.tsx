@@ -90,7 +90,7 @@ export default function ActiviteitDetails({ params }: { params: Promise<{ activi
         <strong>Datum:</strong> {new Date(activiteit.date).toLocaleDateString()}
       </p>
       <p className="text-sm text-gray-500 mb-4">
-        <strong>Participants ({participants?.length || 0}):</strong>{' '}
+        <strong>Deelnemers ({participants?.length || 0}):</strong>{' '}
         {participants && participants.length > 0
           ? participants.map((p) => p.participant_name).join(', ')
           : 'No participants yet'}
@@ -102,7 +102,7 @@ export default function ActiviteitDetails({ params }: { params: Promise<{ activi
           type="text"
           value={userName}
           onChange={(e) => setUserName(e.target.value)}
-          placeholder="Enter your name"
+          placeholder="Voer je naam in"
           className="border border-gray-400 rounded-lg px-4 py-2 w-full mb-4 bg-white text-black"
         />
         <button
@@ -112,7 +112,7 @@ export default function ActiviteitDetails({ params }: { params: Promise<{ activi
             isLoading && 'opacity-50 cursor-not-allowed'
           }`}
         >
-          {isLoading ? 'Signing up...' : 'Sign Up'}
+          {isLoading ? 'Aanmelden...' : 'Aanmelden'}
         </button>
         {successMessage && <p className="text-green-600 mt-4">{successMessage}</p>}
       </div>
