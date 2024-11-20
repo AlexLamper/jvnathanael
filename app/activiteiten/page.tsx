@@ -67,7 +67,7 @@ export default function Activiteiten() {
             </p>
             <Link href={`/activiteiten/${activiteit.id}`} passHref>
               <button className="mt-4 px-6 py-2 bg-[#3A3C71] text-white rounded-md hover:bg-[#323464] transition">
-                Bekijk Details
+                Details/Aanmelden
               </button>
             </Link>
           </div>
