@@ -117,12 +117,6 @@ export const Navbar11 = (props: Navbar11Props) => {
                         <UserButton />
                     </SignedIn>
                     <SignedOut>
-                        <SignInButton mode="modal">
-                            <WhiteButton title="Login" url={"/sign-in"} />
-                        </SignInButton>
-                        <SignUpButton mode="modal">
-                            <WhiteButton title="Sign Up" url={"/sign-up"} />
-                        </SignUpButton>
                     </SignedOut>
                 </ClerkLoaded>
             </div>

@@ -41,7 +41,12 @@ export const Header127 = (props: Header127Props) => {
             {/* If signed in using clerk, show admin heading  */}
             {isLoaded ? (
               <>
+              <SignedIn>
                 <h1 className="mb-5 text-4xl font-bold md:mb-4 md:text-6xl lg:text-7xl text-black">{heading} <span className="text-xl text-gray-800">(Admin)</span></h1>
+              </SignedIn>
+              <SignedOut>
+                <h1 className="mb-5 text-4xl font-bold md:mb-4 md:text-6xl lg:text-7xl text-black">{heading}</h1>
+              </SignedOut>
               </>
             ) : (
               "Loading..."
