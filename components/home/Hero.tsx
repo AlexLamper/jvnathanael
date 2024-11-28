@@ -6,6 +6,7 @@ import OutlineButton from "../common/Transparentbutton";
 import React from "react";
 // import { Spinner } from "@nextui-org/spinner";
 import { ClerkLoaded, SignedIn, SignedOut } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 
 type ImageProps = {
   src: string;
@@ -30,26 +31,21 @@ export const Header127 = (props: Header127Props) => {
     ...props,
   } as Props;
 
+  const { user, isLoaded } = useUser();
+
   return (
     <section id="relume" className="lg:px-[5%] px-0 py-8 md:py-9 lg:py-10">
       <div className="container">
         <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16">
           <div>
             {/* If signed in using clerk, show admin heading  */}
-            <ClerkLoaded>
-              <SignedIn>
-                <h1 className="hidden mb-5 text-4xl font-bold md:mb-4 md:text-6xl lg:text-7xl text-black">
-                  You are an admin. {heading}
-                </h1>
-              </SignedIn>
-              <SignedOut>
-                <h1 className="hidden mb-5 text-4xl font-bold md:mb-4 md:text-6xl lg:text-7xl text-black">
-                  {heading}
-                </h1>
-              </SignedOut>
-            </ClerkLoaded>
-            {/* If the user isn't signed in, show the normal heading  */}
-            <h1 className="mb-5 text-4xl font-bold md:mb-4 md:text-6xl lg:text-7xl text-black">{heading}</h1>
+            {isLoaded ? (
+              <>
+               <h1 className="text-black text-5xl">Welcome, {user ? user.firstName : "Guest"}!</h1>
+              </>
+            ) : (
+              "Loading..."
+            )}
             <p
             className="md:text-md mt-12 text-black"
             dangerouslySetInnerHTML={{ __html: description }}
