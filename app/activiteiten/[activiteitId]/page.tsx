@@ -1,85 +1,103 @@
-'use client'
+"use client";
 
-import { createClient } from '@/utils/supabase/client'
-import { useState, useEffect } from 'react'
+import { createClient } from '@/utils/supabase/client';
+import { useState, useEffect } from 'react';
+import { useUser } from "@clerk/nextjs";
 
 export default function ActiviteitDetails({ params }: { params: Promise<{ activiteitId: string }> }) {
-  const supabase = createClient()
+  const supabase = createClient();
 
-  const [activiteitId, setActiviteitId] = useState<string | null>(null)
-  const [activiteit, setActiviteit] = useState<any | null>(null)
-  const [participants, setParticipants] = useState<any[] | null>(null) // Define participants state
-  const [userName, setUserName] = useState<string>('')
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [successMessage, setSuccessMessage] = useState<string>('')
+  const [activiteitId, setActiviteitId] = useState<string | null>(null);
+  const [activiteit, setActiviteit] = useState<any | null>(null);
+  const [participants, setParticipants] = useState<any[] | null>(null);
+  const [userName, setUserName] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [successMessage, setSuccessMessage] = useState<string>('');
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+  const { user, isLoaded } = useUser();
+
+  // Check if the user is admin
+  useEffect(() => {
+    if (isLoaded && user) {
+      const role = user.publicMetadata.role as string;
+      setIsAdmin(role === "admin");
+    }
+  }, [user, isLoaded]);
 
   // Fetch activity details
   useEffect(() => {
-    params.then((resolvedParams) => setActiviteitId(resolvedParams.activiteitId))
-  }, [params])
+    params.then((resolvedParams) => setActiviteitId(resolvedParams.activiteitId));
+  }, [params]);
 
   useEffect(() => {
     if (activiteitId) {
       const fetchActiviteit = async () => {
-        // Fetch activity details
         const activiteitResponse = await supabase
           .from('activiteiten')
           .select()
           .eq('id', activiteitId)
-          .single()
-        setActiviteit(activiteitResponse.data)
+          .single();
+        setActiviteit(activiteitResponse.data);
 
-        // Fetch participants
         const participantsResponse = await supabase
           .from('activiteiten_participants')
-          .select('participant_name') // Adjust column name if different
-          .eq('activiteit_id', activiteitId)
-        setParticipants(participantsResponse.data || [])
-      }
-      fetchActiviteit()
+          .select('participant_name')
+          .eq('activiteit_id', activiteitId);
+        setParticipants(participantsResponse.data || []);
+      };
+      fetchActiviteit();
     }
-  }, [activiteitId])
+  }, [activiteitId]);
 
   // Handle sign-up (POST request using Supabase)
   const handleSignUp = async () => {
     if (!userName.trim()) {
-      alert('Please enter your name.')
-      return
+      alert('Please enter your name.');
+      return;
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
-      // Insert new participant into the `activiteiten_participants` table
       const { data, error } = await supabase
         .from('activiteiten_participants')
         .insert({
           participant_name: userName,
           activiteit_id: activiteitId,
-        })
+        });
 
       if (error) {
-        console.error('Error adding participant:', error)
-        alert('An error occurred while signing up. Please try again.')
-        return
+        console.error('Error adding participant:', error);
+        alert('An error occurred while signing up. Please try again.');
+        return;
       }
 
-      console.log('Participant added successfully:', data)
-
-      // Update the participants list locally
-      setParticipants((prev) => [...(prev || []), { participant_name: userName }])
-      setSuccessMessage('You have successfully signed up!')
-      setUserName('') // Clear the input field
+      setParticipants((prev) => [...(prev || []), { participant_name: userName }]);
+      setSuccessMessage('You have successfully signed up!');
+      setUserName('');
     } catch (err) {
-      console.error('Unexpected error:', err)
-      alert('An unexpected error occurred. Please try again.')
+      console.error('Unexpected error:', err);
+      alert('An unexpected error occurred. Please try again.');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
+
+  const handleCreate = () => {
+    alert("Create button clicked. Implement create logic here.");
+  };
+
+  const handleEdit = () => {
+    alert("Edit button clicked. Implement edit logic here.");
+  };
+
+  const handleDelete = () => {
+    alert("Delete button clicked. Implement delete logic here.");
+  };
 
   if (!activiteit) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
   return (
@@ -95,6 +113,29 @@ export default function ActiviteitDetails({ params }: { params: Promise<{ activi
           ? participants.map((p) => p.participant_name).join(', ')
           : 'No participants yet'}
       </p>
+
+      {isAdmin && (
+        <div className="mb-4">
+          <button
+            onClick={handleCreate}
+            className="px-4 py-2 bg-green-600 text-white rounded-lg mr-2 hover:bg-green-500"
+          >
+            Creëren
+          </button>
+          <button
+            onClick={handleEdit}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg mr-2 hover:bg-blue-500"
+          >
+            Bewerken
+          </button>
+          <button
+            onClick={handleDelete}
+            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500"
+          >
+            Verwijderen
+          </button>
+        </div>
+      )}
 
       <div className="border-t border-gray-300 pt-4">
         <h2 className="text-lg font-semibold mb-2 text-black">Aanmelden voor deze activiteit</h2>
@@ -115,9 +156,7 @@ export default function ActiviteitDetails({ params }: { params: Promise<{ activi
           {isLoading ? 'Aanmelden...' : 'Aanmelden'}
         </button>
         {successMessage && <p className="text-green-600 mt-4">{successMessage}</p>}
-
-        
       </div>
     </section>
-  )
+  );
 }
