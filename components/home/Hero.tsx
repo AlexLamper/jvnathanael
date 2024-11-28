@@ -1,6 +1,11 @@
+"use client";
+
 import type { ButtonProps } from "@relume_io/relume-ui";
 import SolidButton from "../common/BlueButton";
 import OutlineButton from "../common/Transparentbutton";
+import React from "react";
+// import { Spinner } from "@nextui-org/spinner";
+import { ClerkLoaded, SignedIn, SignedOut } from "@clerk/nextjs";
 
 type ImageProps = {
   src: string;
@@ -9,6 +14,7 @@ type ImageProps = {
 
 type Props = {
   heading: string;
+  adminHeading: string;
   description: string;
   buttons: ButtonProps[];
   firstImage: ImageProps;
@@ -23,11 +29,26 @@ export const Header127 = (props: Header127Props) => {
     ...Header127Defaults,
     ...props,
   } as Props;
+
   return (
     <section id="relume" className="lg:px-[5%] px-0 py-8 md:py-9 lg:py-10">
       <div className="container">
         <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16">
           <div>
+            {/* If signed in using clerk, show admin heading  */}
+            <ClerkLoaded>
+              <SignedIn>
+                <h1 className="hidden mb-5 text-4xl font-bold md:mb-4 md:text-6xl lg:text-7xl text-black">
+                  You are an admin. {heading}
+                </h1>
+              </SignedIn>
+              <SignedOut>
+                <h1 className="hidden mb-5 text-4xl font-bold md:mb-4 md:text-6xl lg:text-7xl text-black">
+                  {heading}
+                </h1>
+              </SignedOut>
+            </ClerkLoaded>
+            {/* If the user isn't signed in, show the normal heading  */}
             <h1 className="mb-5 text-4xl font-bold md:mb-4 md:text-6xl lg:text-7xl text-black">{heading}</h1>
             <p
             className="md:text-md mt-12 text-black"
@@ -64,6 +85,7 @@ export default Header127;
 
 export const Header127Defaults: Header127Props = {
   heading: "Jeugdvereniging Nathanaël",
+  adminHeading: "Jeugdvereniging Nathanaël (Admin)",
   description:
     "Jeugdvereniging 'Nathánaël' is een christelijke jeugdvereniging voor jongeren van 15 jaar en ouder. De jeugdvereniging is verbonden met de Hersteld Hervormde Gemeente Middelharnis – Sommelsdijk. De verenigingsavonden vinden om de week plaats op zondagavond. <br><br> Na de middagdienst eten we eerst met elkaar, waarna het officiële gedeelte begint. Leden maken een inleiding aan de hand van een onderwerp uit de serie Bijbelstudies van het HHJO of over een vrij onderwerp. Verder houden we een aantal keren per jaar een preekbespreking of we nodigen een gastspreker uit. <br><br> Daarnaast maken we tijd vrij om te zingen. In ieder geval komt het allerbelangrijkste aan de orde: hoe kunnen we een rechtvaardig God ontmoeten? Kennis van God en Goddelijke zaken is allernoodzakelijkst!",
   secondImage: {
