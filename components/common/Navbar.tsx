@@ -108,7 +108,7 @@ export const Navbar11 = (props: Navbar11Props) => {
           <div className="mt-6 flex flex-col items-center gap-4 lg:ml-4 lg:mt-0 lg:flex-row">
             <WhiteButton title="Activiteiten" url="/activiteiten" />
           </div>
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-4 ml-6">
                 <ClerkLoading>
                     <div className="h-5 w-5 text-gray-400 animate-spin" />
                 </ClerkLoading>

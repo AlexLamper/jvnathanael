@@ -115,6 +115,8 @@ export default function ActiviteitDetails({ params }: { params: Promise<{ activi
           {isLoading ? 'Aanmelden...' : 'Aanmelden'}
         </button>
         {successMessage && <p className="text-green-600 mt-4">{successMessage}</p>}
+
+        
       </div>
     </section>
   )

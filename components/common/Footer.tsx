@@ -110,6 +110,6 @@ export const FooterDefaults: FooterProps = {
   ],
   footerText: "© 2024 Jv - Nathanael. All rights reserved.",
   footerLinks: [
-    { title: "Gemaakt door Alex :)", url: "" },
+    { title: "Gemaakt door Alex", url: "" },
   ],
 };

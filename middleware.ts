@@ -1,7 +1,9 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import { NextResponse } from 'next/server'
 
 const isProtectedRoute = createRouteMatcher(['/dashboard', '/quiz/:path*', '/(api|trpc)(.*)'])
 const isPublicRoute = createRouteMatcher(['/', '/about', '/help', '/sign-in(.*)', '/sign-up(.*)'])
+const isAdminRoute = createRouteMatcher(['/admin(.*)'])
 
 export default clerkMiddleware(async (auth, req) => {
   // Protect the routes that match the defined protected routes
@@ -9,6 +11,11 @@ export default clerkMiddleware(async (auth, req) => {
 
   if (isPublicRoute(req)) {
     return
+  }
+
+  if (isAdminRoute(req) && (await auth()).sessionClaims?.metadata?.role !== 'admin') {
+    const url = new URL('/', req.url)
+    return NextResponse.redirect(url)
   }
 })
 
