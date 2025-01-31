@@ -1,30 +1,40 @@
-import { type NextRequest } from "next/server";
-import { updateSession } from "@/utils/supabase/middleware";
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import { NextResponse } from 'next/server'
 
-export async function middleware(request: NextRequest) {
-  // Get the current URL
-  const url = request.nextUrl.clone();
-  
-  // Check if the request is for the homepage (or any other public routes)
-  if (url.pathname === "/") {
-    // Allow access to the homepage without checking if the user is logged in
+const isProtectedRoute = createRouteMatcher(['/dashboard', '/quiz/:path*', '/api/:path*']) // Protect API routes except /api/courses
+const isPublicRoute = createRouteMatcher(['/', '/about', '/help', '/sign-in(.*)', '/sign-up(.*)'])
+const isAdminRoute = createRouteMatcher(['/admin(.*)'])
+
+export default clerkMiddleware(async (auth, req) => {
+  const pathname = req.nextUrl.pathname;
+
+  // Allow public access to /api/courses
+  if (pathname.startsWith('/api/courses')) {
+    return; // Skip authentication for this specific API route
+  }
+
+  // Protect the routes that match the defined protected routes
+  if (isProtectedRoute(req)) await auth.protect();
+
+  if (isPublicRoute(req)) {
     return;
   }
 
-  // Otherwise, handle session update for other routes
-  return await updateSession(request);
-}
+  if (isAdminRoute(req) && (await auth()).sessionClaims?.metadata?.role !== 'admin') {
+    const url = new URL('/', req.url);
+    return NextResponse.redirect(url);
+  }
+});
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - images - .svg, .png, .jpg, .jpeg, .gif, .webp
-     * Feel free to modify this pattern to include more paths.
-     */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    '/',
+    '/about',
+    '/help',
+    '/dashboard',
+    '/quiz/:path*',
+    '/api/:path*', // Protect API routes
+    '/admin(.*)',
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
   ],
 };
