@@ -1,5 +1,62 @@
 import mongoose from "mongoose";
 
+export interface CourseType {
+  _id: mongoose.Schema.Types.ObjectId;
+  title: string;
+  description: string;
+  category: string;
+  instructor: string;
+  lessons: string[];
+  totalDuration: number;
+  difficulty: string;
+  tags: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const courseSchema = new mongoose.Schema<CourseType>({
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  category: {
+    type: String,
+    required: true,
+  },
+  instructor: {
+    type: String,
+    required: true,
+  },
+  lessons: {
+    type: [String],
+    required: true,
+  },
+  totalDuration: {
+    type: Number,
+    required: true,
+  },
+  difficulty: {
+    type: String,
+    required: true,
+  },
+  tags: {
+    type: [String],
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
 // Activiteit Schema
 export interface ActiviteitType {
   _id: mongoose.Schema.Types.ObjectId;
@@ -71,3 +128,4 @@ const signupSchema = new mongoose.Schema<SignupType>({
 // Export models
 export const Activiteit = mongoose.models.Activiteit || mongoose.model("Activiteit", activiteitSchema);
 export const Signup = mongoose.models.Signup || mongoose.model("Signup", signupSchema);
+export const Course = mongoose.models.Course || mongoose.model('Course', courseSchema);
