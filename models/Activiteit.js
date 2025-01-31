@@ -7,11 +7,9 @@ const ActiviteitSchema = new mongoose.Schema(
     date: { type: Date, required: true },
     location: { type: String, required: true },
     max_participants: { type: Number, required: true },
-    participants: [
-      {
-        participant_name: { type: String, required: true },
-      },
-    ],
+    participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    created_at: { type: Date, default: Date.now },
+    updated_at: { type: Date, default: Date.now },
   },
   { timestamps: true }
 );

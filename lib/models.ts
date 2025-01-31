@@ -57,50 +57,57 @@ const courseSchema = new mongoose.Schema<CourseType>({
   },
 });
 
-// Activiteit Schema
 export interface ActiviteitType {
   _id: mongoose.Schema.Types.ObjectId;
   name: string;
-  description?: string;
+  description: string;
   date: Date;
   location: string;
   max_participants: number;
-  created_at: Date;
-  updated_at: Date;
+  participants: mongoose.Schema.Types.ObjectId[];
+  created_at?: Date;
+  updated_at?: Date;
 }
 
-const activiteitSchema = new mongoose.Schema<ActiviteitType>({
-  name: {
-    type: String,
-    required: true,
+const activiteitSchema = new mongoose.Schema<ActiviteitType>(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    description: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    date: {
+      type: Date,
+      required: true,
+    },
+    location: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    max_participants: {
+      type: Number,
+      required: true,
+      min: 1,
+    },
+    participants: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
-  description: {
-    type: String,
-    default: null,
-  },
-  date: {
-    type: Date,
-    required: true,
-  },
-  location: {
-    type: String,
-    required: true,
-  },
-  max_participants: {
-    type: Number,
-    required: true,
-  },
-  created_at: {
-    type: Date,
-    default: Date.now,
-  },
-  updated_at: {
-    type: Date,
-    default: Date.now,
-  },
-});
+  {
+    timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
+  }
+);
 
-// User Sign-ups Schema
+
 export interface SignupType {
   _id: mongoose.Schema.Types.ObjectId;
   user: mongoose.Schema.Types.ObjectId;
@@ -125,7 +132,7 @@ const signupSchema = new mongoose.Schema<SignupType>({
   },
 });
 
-// Export models
-export const Activiteit = mongoose.models.Activiteit || mongoose.model("Activiteit", activiteitSchema);
+export const Activiteit =
+  mongoose.models.Activiteit || mongoose.model("Activiteit", activiteitSchema);
 export const Signup = mongoose.models.Signup || mongoose.model("Signup", signupSchema);
 export const Course = mongoose.models.Course || mongoose.model('Course', courseSchema);

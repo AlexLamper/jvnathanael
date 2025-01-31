@@ -8,10 +8,10 @@ export async function GET() {
     await connectMongoDB();
     console.log('MongoDB connected successfully');
 
-    const activiteiten = await Activiteit.find();
-    console.log('Activiteiten fetched:', activiteiten);
+    const courses = await Activiteit.find();
+    console.log('Courses fetched:', courses);
 
-    return NextResponse.json(activiteiten);
+    return NextResponse.json(courses);
   } catch (error) {
     console.error('Error fetching courses:', error);
     return NextResponse.json({ message: 'Error fetching courses' }, { status: 500 });
@@ -21,12 +21,12 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     await connectMongoDB();
-    const activiteitData = await request.json();
-    const newActiviteit = new Activiteit(activiteitData);
-    await newActiviteit.save();
-    return NextResponse.json(newActiviteit, { status: 201 });
+    const courseData = await request.json();
+    const newCourse = new Activiteit(courseData);
+    await newCourse.save();
+    return NextResponse.json(newCourse, { status: 201 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ message: 'Error creating activiteit' }, { status: 500 });
+    return NextResponse.json({ message: 'Error creating course' }, { status: 500 });
   }
 }
