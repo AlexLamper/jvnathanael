@@ -1,25 +1,38 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { ActiviteitType } from "@/lib/models";
-import Link from "next/link";
+import { useEffect, useState } from 'react';
 
-const ActiviteitPage = () => {
-  const [activiteiten, setActiviteiten] = useState<ActiviteitType[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+interface Activiteit {
+  _id: string;
+  name: string;
+  description: string;
+  date: string;
+  location: string;
+  max_participants: number;
+  created_at: string;
+  updated_at: string;
+  participants: any[]; // Adjust this if needed
+}
+
+interface ActiviteitenResponse {
+  _id: string;
+  activiteiten: Activiteit[];
+}
+
+const ActiviteitenComponent = () => {
+  const [activiteiten, setActiviteiten] = useState<Activiteit[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchActiviteiten = async () => {
       try {
-        const response = await fetch("/api/activiteiten");
-        if (!response.ok) {
-          throw new Error("Failed to fetch activiteiten");
-        }
-
-        const activiteiten: ActiviteitType[] = await response.json();
-        setActiviteiten(activiteiten);
-      } catch (error) {
-        console.error("Error fetching activiteiten:", error);
+        // Fetch data from your API or database endpoint
+        const response = await fetch('/api/activiteiten'); // Adjust this URL to your actual API endpoint
+        const data: ActiviteitenResponse = await response.json();
+        setActiviteiten(data.activiteiten);
+      } catch (err) {
+        setError('Failed to fetch activiteiten');
       } finally {
         setLoading(false);
       }
@@ -28,60 +41,33 @@ const ActiviteitPage = () => {
     fetchActiviteiten();
   }, []);
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
-    <div className="py-8 min-h-[100vh]">
-      <div className="lg:max-w-3xl max-w-[95%]">
-        <h1 className="text-3xl font-bold mb-6">Activiteiten</h1>
-        {loading ? (
-          <div className="flex justify-center items-center">
-            <div className="w-10 h-10 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
-          </div>
-        ) : activiteiten.length === 0 ? (
-          <p className="text-gray-500">Geen activiteiten gevonden.</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {activiteiten.map((activiteit) => (
-            <div
-              key={activiteit._id.toString()}
-              className="border border-black border-opacity-60 p-4 rounded-lg bg-white shadow-md hover:shadow-lg transition"
-            >
-              <h3 className="text-xl font-bold text-[#3A3C71]">{activiteit.name}</h3>
-              <p className="text-gray-700 mb-4">{activiteit.description}</p>
-              <p className="text-sm text-gray-500">Datum: {new Date(activiteit.date).toLocaleDateString()}</p>
-              {/* <p className="text-sm text-gray-500">
-                <strong>{activiteit.participants.length}</strong> deelnemers: {" "}
-                {activiteit.participants.length > 0
-                  ? activiteit.participants.map((p) => p.participant_name).join(", ")
-                  : "Geen deelnemers"}
-              </p> */}
-              <Link href={`/activiteiten/${activiteit._id.toString()}`} passHref>
-                <button className="mt-4 px-6 py-2 bg-[#3A3C71] text-white rounded-md hover:bg-[#323464] transition">
-                  Details/Aanmelden
-                </button>
-              </Link>
-              {/* {isAdmin && (
-                <div className="mt-4 flex gap-2">
-                  <button
-                    onClick={() => handleEdit(activiteit.id)}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500"
-                  >
-                    Bewerken
-                  </button>
-                  <button
-                    onClick={() => handleDelete(activiteit.id)}
-                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500"
-                  >
-                    Verwijderen
-                  </button>
-                </div>
-              )} */}
-            </div>
-          ))}
-        </div>
-        )}
-      </div>
+    <div>
+      <h1>Activiteiten</h1>
+      <ul>
+        {activiteiten.map((activiteit) => (
+          <li key={activiteit._id}>
+            <h2>{activiteit.name}</h2>
+            <p>{activiteit.description}</p>
+            <p><strong>Date:</strong> {new Date(activiteit.date).toLocaleString()}</p>
+            <p><strong>Location:</strong> {activiteit.location}</p>
+            <p><strong>Max Participants:</strong> {activiteit.max_participants}</p>
+            <p><strong>Created At:</strong> {new Date(Number(activiteit.created_at)).toLocaleString()}</p>
+            <p><strong>Updated At:</strong> {new Date(Number(activiteit.updated_at)).toLocaleString()}</p>
+            <p><strong>Participants:</strong> {activiteit.participants.length}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
 
-export default ActiviteitPage;
+export default ActiviteitenComponent;

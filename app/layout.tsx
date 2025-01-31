@@ -4,18 +4,9 @@ import Footer from "@/components/common/Footer";
 import Navbar11 from "@/components/common/Navbar";
 import {
   ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton
 } from '@clerk/nextjs'
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
-
 export const Metadata = {
-  metadataBase: new URL(defaultUrl),
   title: "Jv - Nathanaël",
   description: "De website van Jeugdvereniging Nathanaël",
 };

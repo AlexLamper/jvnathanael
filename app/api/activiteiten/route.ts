@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
-import connectMongoDB from '@/libs/mongodb';
+import connectDB from "@/libs/mongodb"
 import Activiteit from '@/models/Activiteit';
 
 export async function GET() {
   try {
     console.log('Connecting to MongoDB...');
-    await connectMongoDB();
-    console.log('MongoDB connected successfully');
+    await connectDB(); // Ensure you're calling this function
+    console.log('MongoDB connected successfully.');
 
     const activiteiten = await Activiteit.find();
     console.log('Activiteiten fetched:', activiteiten);
@@ -18,9 +18,10 @@ export async function GET() {
   }
 }
 
+
 export async function POST(request: Request) {
   try {
-    await connectMongoDB();
+    await connectDB();
     const activiteitData = await request.json();
     const newActiviteit = new Activiteit(activiteitData);
     await newActiviteit.save();
