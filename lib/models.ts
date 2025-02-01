@@ -57,6 +57,25 @@ const courseSchema = new mongoose.Schema<CourseType>({
   },
 });
 
+export interface LessonType {
+  _id: mongoose.Schema.Types.ObjectId;
+  title: string;
+  content: string;
+  duration: number;
+  course: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const lessonSchema = new mongoose.Schema<LessonType>({
+  title: { type: String, required: true },
+  content: { type: String, required: true },
+  duration: { type: Number, required: true },
+  course: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
+
 export interface ActiviteitType {
   _id: mongoose.Schema.Types.ObjectId;
   name: string;
@@ -136,3 +155,4 @@ export const Activiteit =
   mongoose.models.Activiteit || mongoose.model("Activiteit", activiteitSchema);
 export const Signup = mongoose.models.Signup || mongoose.model("Signup", signupSchema);
 export const Course = mongoose.models.Course || mongoose.model('Course', courseSchema);
+export const Lesson = mongoose.models.Lesson || mongoose.model('Lesson', lessonSchema);
