@@ -13,6 +13,9 @@ export async function GET() {
     const courses = await Course.find();
     console.log('Courses fetched:', courses);
 
+    const activiteit = await Activiteit.find();
+    console.log('Activiteit fetched:', activiteit);
+
     const activiteiten = await Activiteit.find();
     console.log('Activiteiten fetched:', activiteiten);
 
