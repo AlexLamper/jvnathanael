@@ -1,34 +1,36 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import Link from "next/link"
-import type { ActiviteitType } from "@/lib/models"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Calendar, Users } from "lucide-react"
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import RegistratieModal from "@/components/activiteiten/RegistratieModal";
+import type { ActiviteitType } from "@/lib/models";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Calendar, Users } from "lucide-react";
 
 const ActiviteitenPage = () => {
-  const [activiteiten, setActiviteiten] = useState<ActiviteitType[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
+  const [activiteiten, setActiviteiten] = useState<ActiviteitType[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [selectedActiviteit, setSelectedActiviteit] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/courses")
+        const response = await fetch("/api/courses");
         if (!response.ok) {
-          throw new Error("Failed to fetch data")
+          throw new Error("Failed to fetch data");
         }
-        const data = await response.json()
-        setActiviteiten(data.activiteiten)
+        const data = await response.json();
+        setActiviteiten(data.activiteiten);
       } catch (error) {
-        console.error("Error fetching data:", error)
+        console.error("Error fetching data:", error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   return (
     <div className="px-4 py-6 sm:px-6 lg:px-8">
@@ -64,19 +66,28 @@ const ActiviteitenPage = () => {
                     </p>
                   </div>
                 </CardContent>
-                <CardFooter>
-                  <Link href={`/activiteiten/${activiteit._id.toString()}`} passHref>
-                    <Button className="w-full bg-[#3A3C70] text-white hover:bg-[#3A3C70]/90">Bekijk Details</Button>
-                  </Link>
+                <CardFooter className="flex justify-between">
+                  <Button 
+                    className="w-full bg-[#3A3C70] text-white hover:bg-[#3A3C70]/90"
+                    onClick={() => setSelectedActiviteit(activiteit._id.toString())}
+                  >
+                    Registreren
+                  </Button>
                 </CardFooter>
               </Card>
             ))
           )}
         </div>
       )}
+
+      {selectedActiviteit && (
+        <RegistratieModal 
+          activiteitId={selectedActiviteit} 
+          onClose={() => setSelectedActiviteit(null)} 
+        />
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default ActiviteitenPage
-
+export default ActiviteitenPage;

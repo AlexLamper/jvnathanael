@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import connectMongoDB from '@/libs/mongodb';
 import Course from '@/models/Course';
 import Activiteit from '@/models/Activiteit';
-import Lesson from '@/models/Lesson';
+import mongoose from 'mongoose';
 
 export async function GET() {
   try {
@@ -19,10 +19,7 @@ export async function GET() {
     const activiteiten = await Activiteit.find();
     console.log('Activiteiten fetched:', activiteiten);
 
-    const lessons = await Lesson.find();
-    console.log('Lessons fetched:', lessons);
-
-    return NextResponse.json({ courses, activiteiten, lessons });
+    return NextResponse.json({ courses, activiteiten });
   } catch (error) {
     console.error('Error fetching data:', error);
     return NextResponse.json({ message: 'Error fetching data' }, { status: 500 });
@@ -32,21 +29,41 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     await connectMongoDB();
-    const { type, data } = await request.json();
+    const { type, data, activiteitId } = await request.json();
 
-    if (type === 'course') {
-      const newCourse = new Course(data);
-      await newCourse.save();
-      return NextResponse.json(newCourse, { status: 201 });
-    } else if (type === 'activiteit') {
-      const newActiviteit = new Activiteit(data);
-      await newActiviteit.save();
-      return NextResponse.json(newActiviteit, { status: 201 });
-    } else if (type === 'lesson') {
-      const newLesson = new Lesson(data);
-      await newLesson.save();
-      return NextResponse.json(newLesson, { status: 201 });
-    } else {
+    if (type === 'activiteit') {
+      if (!activiteitId || !data.name) {
+        return NextResponse.json({ message: 'Missing activiteitId or name' }, { status: 400 });
+      }
+
+      // Convert the activiteitId from string (in $oid format) to ObjectId
+      const activiteitObjectId = new mongoose.Types.ObjectId(activiteitId);
+
+      const activiteit = await Activiteit.findById(activiteitObjectId);
+      if (!activiteit) {
+        return NextResponse.json({ message: 'Activiteit not found' }, { status: 404 });
+      }
+
+      // Check if the user is already registered
+      const isRegistered = activiteit.participants.includes(data.name);
+      if (isRegistered) {
+        return NextResponse.json({ message: 'User already registered' }, { status: 400 });
+      }
+
+      console.log('Data Name:', data.name); // Check what value data.name has
+
+      // Ensure that the value of data.name is a string
+      if (typeof data.name === 'string') {
+        activiteit.participants.push(data.name);
+      } else {
+        return NextResponse.json({ message: 'Invalid name type' }, { status: 400 });
+      }
+
+      await activiteit.save();
+
+      return NextResponse.json(activiteit, { status: 201 });
+    } 
+    else {
       return NextResponse.json({ message: 'Invalid type' }, { status: 400 });
     }
   } catch (error) {
