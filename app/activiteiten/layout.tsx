@@ -6,8 +6,8 @@ import type { Metadata } from "next";
 // import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 
 export const metadata: Metadata = {
-  title: "Scriptura",
-  description: "Scriptura is an online learning platform to learn more about the bible.",
+  title: "Jv Nathanael",
+  description: "Jv Nathanael - HHK.",
 };
 
 export default async function ActiviteitenLayout({

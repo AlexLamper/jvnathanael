@@ -1,67 +1,82 @@
-"use client";
+"use client"
 
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { ActiviteitType } from "@/lib/models";
+import { useEffect, useState } from "react"
+import Link from "next/link"
+import type { ActiviteitType } from "@/lib/models"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Calendar, Users } from "lucide-react"
 
 const ActiviteitenPage = () => {
-  const [activiteiten, setActiviteiten] = useState<ActiviteitType[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [activiteiten, setActiviteiten] = useState<ActiviteitType[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/courses");
+        const response = await fetch("/api/courses")
         if (!response.ok) {
-          throw new Error("Failed to fetch data");
+          throw new Error("Failed to fetch data")
         }
-        const data = await response.json();
-        setActiviteiten(data.activiteiten);
+        const data = await response.json()
+        setActiviteiten(data.activiteiten)
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data:", error)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   return (
-    <section className="container lg:max-w-[90%] max-w-[95%] mx-auto py-20">
-      <h2 className="text-2xl font-semibold mb-4 text-[#3A3C71]">Aanstaande activiteiten</h2>
+    <div className="px-4 py-6 sm:px-6 lg:px-8">
+      <h1 className="text-3xl font-bold mb-8 text-[#3A3C70]">Aanstaande activiteiten</h1>
       {loading ? (
-        <div className="flex justify-center items-center">
-          <div className="w-10 h-10 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+        <div className="flex justify-center items-center h-64">
+          <div className="w-10 h-10 border-4 border-[#3A3C70] border-t-[#C5A572] rounded-full animate-spin"></div>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {activiteiten?.length === 0 ? (
-            <p className="text-gray-500">Geen activiteiten gevonden</p>
+            <Card>
+              <CardContent className="pt-6">
+                <p className="text-gray-500">Geen activiteiten gevonden</p>
+              </CardContent>
+            </Card>
           ) : (
             activiteiten?.map((activiteit) => (
-              <div
-                key={activiteit._id.toString()}
-                className="border border-black border-opacity-60 p-4 rounded-lg bg-white shadow-md hover:shadow-lg transition"
-              >
-                <h3 className="text-xl font-bold text-[#3A3C71]">{activiteit.name}</h3>
-                <p className="text-gray-700 mb-4">{activiteit.description}</p>
-                <p className="text-sm text-gray-500">Datum: {new Date(activiteit.date).toLocaleDateString()}</p>
-                <p className="text-sm text-gray-500">
-                  <strong>{activiteit.participants?.length || 0}</strong> deelnemers
-                </p>
-                <Link href={`/activiteiten/${activiteit._id.toString()}`} passHref>
-                  <button className="mt-4 px-6 py-2 bg-[#3A3C71] text-white rounded-md hover:bg-[#323464] transition">
-                    Bekijk Details
-                  </button>
-                </Link>
-              </div>
+              <Card key={activiteit._id.toString()} className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <CardTitle className="text-xl font-bold text-[#3A3C70]">{activiteit.name}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700 mb-4">{activiteit.description}</p>
+                  <div className="flex items-center text-sm text-gray-500 mb-2">
+                    <Calendar className="h-4 w-4 mr-2 text-[#3A3C70]" />
+                    {new Date(activiteit.date).toLocaleDateString()}
+                  </div>
+                  <div className="flex items-center text-sm text-gray-500">
+                    <Users className="h-4 w-4 mr-2 text-[#3A3C70]" />
+                    <p className="text-sm text-gray-500">
+                      <strong>{activiteit.participants?.length || 0}</strong> deelnemers
+                    </p>
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Link href={`/activiteiten/${activiteit._id.toString()}`} passHref>
+                    <Button className="w-full bg-[#3A3C70] text-white hover:bg-[#3A3C70]/90">Bekijk Details</Button>
+                  </Link>
+                </CardFooter>
+              </Card>
             ))
           )}
         </div>
       )}
-    </section>
-  );
-};
+    </div>
+  )
+}
 
-export default ActiviteitenPage;
+export default ActiviteitenPage
+

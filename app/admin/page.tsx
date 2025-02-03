@@ -1,97 +1,125 @@
-import { redirect } from 'next/navigation';
-import { checkRole } from '@/utils/roles';
-import { SearchUsers } from './SearchUsers';
-import { clerkClient } from '@clerk/nextjs/server';
-import { removeRole, setRole } from './_actions';
+import { Calendar, Users, BookOpen, Bell, Settings } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 
-export default async function AdminDashboard(params: {
-  searchParams: Promise<{ search?: string }>;
-}) {
-  if (!checkRole('admin')) {
-    redirect('/');
-  }
-
-  const query = (await params.searchParams).search;
-
-  const client = await clerkClient();
-
-  const users = query ? (await client.users.getUserList({ query })).data : [];
-
+export default function AdminDashboard() {
   return (
-    <section className="container mx-auto px-4 py-10 min-h-screen">
-      <h1 className="text-4xl font-bold text-gray-800 mb-8">
-        Admin Pagina
-      </h1>
-      <p className="text-lg text-gray-600 mb-6">
-        Dit is de beveiligde admin pagina dat beperkt is tot gebruikers met de rol <span className="font-semibold">admin</span>.
-      </p>
+    <div className="container px-4 py-6 sm:px-6 lg:px-8">
+      <h1 className="text-3xl font-bold mb-8">Beheerders Paneel</h1>
 
-      <div className="mb-8">
-        <SearchUsers />
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <Link href="/admin/activiteiten">
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+              <CardTitle className="text-sm font-medium">Activiteiten</CardTitle>
+              <Calendar className="h-4 w-4 text-[#3A3C70]" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">12</div>
+              <p className="text-xs text-muted-foreground">Aankomende activiteiten</p>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/admin/members">
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+              <CardTitle className="text-sm font-medium">Aanmeldingen</CardTitle>
+              <Users className="h-4 w-4 text-[#3A3C70]" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">48</div>
+              <p className="text-xs text-muted-foreground">Actieve aanmeldingen</p>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
 
-      {users.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {users.map((user) => (
-            <div
-              key={user.id}
-              className="border rounded-lg shadow-sm p-6 bg-white hover:shadow-md transition"
-            >
-              <div className="mb-4">
-                <h2 className="text-xl font-semibold text-gray-700">
-                  {user.firstName} {user.lastName}
-                </h2>
-                <p className="text-sm text-gray-500">
-                  {
-                    user.emailAddresses.find(
-                      (email) => email.id === user.primaryEmailAddressId
-                    )?.emailAddress
-                  }
-                </p>
-                <p className="text-sm text-gray-600 mt-1">
-                  Rol: <span className="font-medium">{user.publicMetadata.role as string}</span>
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <form action={setRole}>
-                  <input type="hidden" value={user.id} name="id" />
-                  <input type="hidden" value="admin" name="role" />
-                  <button
-                    type="submit"
-                    className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition"
-                  >
-                    Maak Admin
-                  </button>
-                </form>
-
-                <form action={setRole}>
-                  <input type="hidden" value={user.id} name="id" />
-                  <input type="hidden" value="moderator" name="role" />
-                  <button
-                    type="submit"
-                    className="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition"
-                  >
-                    Maak Moderator
-                  </button>
-                </form>
-
-                <form action={removeRole}>
-                  <input type="hidden" value={user.id} name="id" />
-                  <button
-                    type="submit"
-                    className="w-full bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition"
-                  >
-                    Verwijder Rol
-                  </button>
-                </form>
-              </div>
+      <div className="grid gap-6 mt-6 sm:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>Recente Activiteiten</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {[
+                {
+                  title: "Zangavond",
+                  date: "2025-02-03",
+                  description: "Samen zingen en lofprijzen.",
+                },
+                {
+                  title: "Schaatsen",
+                  date: "2025-02-02",
+                  description: "Schaatsen in Breda.",
+                },
+                {
+                  title: "Jeugdavond",
+                  date: "2025-02-01",
+                  description: "Een gezellige avond voor de jeugd met activiteiten en Bijbelstudie.",
+                },
+              ].map((announcement) => (
+                <div key={announcement.title} className="flex items-start space-x-4 p-4 rounded-lg bg-gray-50">
+                  <Bell className="h-5 w-5 text-[#3A3C70] mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold">{announcement.title}</h3>
+                    <p className="text-sm text-muted-foreground">{announcement.description}</p>
+                    <time className="text-xs text-muted-foreground">{announcement.date}</time>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      ) : (
-        <p className="text-center text-gray-500">Geen gebruikers gevonden. Gebruik de zoekbalk om gebruikers te vinden.</p>
-      )}
-    </section>
-  );
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Snelle Taken</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4">
+              <Button className="w-full bg-[#3A3C70] text-white hover:bg-[#3A3C70]/90">
+                Nieuwe activiteit aanmaken
+              </Button>
+              <Button className="w-full bg-[#3A3C70] text-white hover:bg-[#3A3C70]/90">
+                Persoon aanmelden voor activiteit
+              </Button>
+              <Link href="/activiteiten">
+                <Button className="w-full bg-[#3A3C70] text-white hover:bg-[#3A3C70]/90">Activiteiten Pagina</Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card className="mt-6">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle>Systeem Instellingen</CardTitle>
+          <Settings className="h-5 w-5 text-[#3A3C70]" />
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="space-y-2">
+              <h4 className="font-semibold">Website</h4>
+              <p className="text-sm text-muted-foreground">Beheer website instellingen en weergave</p>
+            </div>
+            <div className="space-y-2">
+              <h4 className="font-semibold">Gebruikers</h4>
+              <p className="text-sm text-muted-foreground">Beheer gebruikers permissies en rollen</p>
+            </div>
+            <div className="space-y-2">
+              <h4 className="font-semibold">Email</h4>
+              <p className="text-sm text-muted-foreground">Pas email notificaties aan</p>
+            </div>
+            <div className="space-y-2">
+              <h4 className="font-semibold">Backup</h4>
+              <p className="text-sm text-muted-foreground">Beheer systeem backups en herstel</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
 }
+

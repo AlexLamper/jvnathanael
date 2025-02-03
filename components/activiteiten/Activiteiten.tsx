@@ -1,13 +1,14 @@
 'use client'
 
-import { createClient } from '@/utils/supabase/client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Calendar, Users } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 export default function Activiteiten() {
   const [activiteiten, setActiviteiten] = useState<any[] | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
-  const supabase = createClient()
 
   useEffect(() => {
     const getData = async () => {
@@ -28,7 +29,7 @@ export default function Activiteiten() {
   }, []);
 
   return (
-    <section className="container lg:max-w-[90%] max-w-[95%] mx-auto py-20">
+    <section className="lg:max-w-[90%] max-w-[95%] mx-auto py-20">
       <h2 className="text-2xl font-semibold mb-4 text-[#3A3C71]">Aanstaande activiteiten</h2>
       {loading ? (
         <div className="flex justify-center items-center">
@@ -37,25 +38,36 @@ export default function Activiteiten() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {activiteiten?.length === 0 ? (
-            <p className="text-gray-500">Geen activiteiten gevonden</p>
+            <Card>
+              <CardContent className="pt-6">
+                <p className="text-gray-500">Geen activiteiten gevonden</p>
+              </CardContent>
+            </Card>
           ) : (
             activiteiten?.map((activiteit) => (
-              <div
-                key={activiteit.id}
-                className="border border-black border-opacity-60 p-4 rounded-lg bg-white shadow-md hover:shadow-lg transition"
-              >
-                <h3 className="text-xl font-bold text-[#3A3C71]">{activiteit.title}</h3>
-                <p className="text-gray-700 mb-4">{activiteit.description}</p>
-                <p className="text-sm text-gray-500">Datum: {new Date(activiteit.date).toLocaleDateString()}</p>
-                <p className="text-sm text-gray-500">
-                  <strong>{activiteit.participants?.length || 0}</strong> deelnemers
-                </p>
-                <Link href={`/activiteiten/${activiteit.id}`} passHref>
-                  <button className="mt-4 px-6 py-2 bg-[#3A3C71] text-white rounded-md hover:bg-[#323464] transition">
-                    Bekijk Details
-                  </button>
-                </Link>
-              </div>
+              <Card key={activiteit._id.toString()} className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <CardTitle className="text-xl font-bold text-[#3A3C70]">{activiteit.name}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700 mb-4">{activiteit.description}</p>
+                  <div className="flex items-center text-sm text-gray-500 mb-2">
+                    <Calendar className="h-4 w-4 mr-2 text-[#3A3C70]" />
+                    {new Date(activiteit.date).toLocaleDateString()}
+                  </div>
+                  <div className="flex items-center text-sm text-gray-500">
+                    <Users className="h-4 w-4 mr-2 text-[#3A3C70]" />
+                    <p className="text-sm text-gray-500">
+                      <strong>{activiteit.participants?.length || 0}</strong> deelnemers
+                    </p>
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Link href={`/activiteiten/${activiteit._id.toString()}`} passHref>
+                    <Button className="w-full bg-[#3A3C70] text-white hover:bg-[#3A3C70]/90">Bekijk Details</Button>
+                  </Link>
+                </CardFooter>
+              </Card>
             ))
           )}
         </div>

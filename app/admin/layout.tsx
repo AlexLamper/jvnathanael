@@ -6,11 +6,11 @@ import type { Metadata } from "next";
 // import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 
 export const metadata: Metadata = {
-  title: "Jv Nathanael",
-  description: "Jv Nathanael - HHK.",
-};
+    title: "Jv Nathanael",
+    description: "Jv Nathanael - HHK.",
+  };
 
-export default async function CoursesLayout({
+export default async function AdminLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
