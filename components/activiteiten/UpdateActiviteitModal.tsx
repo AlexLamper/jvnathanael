@@ -57,7 +57,7 @@ const UpdateActiviteitModal = ({ activiteit, onClose, onSuccess }: UpdateActivit
             <Button type="button" variant="outline" onClick={onClose}>
               Annuleren
             </Button>
-            <Button type="submit">Bijwerken</Button>
+            <Button type="submit" className="bg-[#3A3C70] text-white">Bijwerken</Button>
           </div>
         </form>
       </DialogContent>

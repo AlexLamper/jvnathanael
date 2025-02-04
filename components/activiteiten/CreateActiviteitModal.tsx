@@ -55,7 +55,7 @@ const CreateActiviteitModal = ({ onClose, onSuccess }: CreateActiviteitModalProp
             <Button type="button" variant="outline" onClick={onClose}>
               Annuleren
             </Button>
-            <Button type="submit">Aanmaken</Button>
+            <Button type="submit" className="bg-[#3A3C70] text-white">Aanmaken</Button>
           </div>
         </form>
       </DialogContent>

@@ -58,8 +58,10 @@ const RegistratieModal = ({ activiteitId, onClose }: RegistratieModalProps) => {
         />
         {error && <p className="text-red-500">{error}</p>}
         {success && <p className="text-green-500">{success}</p>}
-        <Button onClick={handleRegister}>Registreren</Button>
-        <Button onClick={onClose} variant="secondary">Annuleren</Button>
+        <div className="mt-2">
+          <Button onClick={onClose} variant="secondary">Annuleren</Button>
+          <Button onClick={handleRegister} className="bg-[#3A3C70] text-white ml-2">Registreren</Button>
+        </div>
       </div>
     </div>
   );
