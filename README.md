@@ -4,13 +4,9 @@
 
 Een website/applicatie voor de jeugdvereniging **Nathanaël**  
 
----
-
 ## Over  
 
 Ik heb deze applicatie/website gemaakt als een project voor de kerkelijke jeugdvereniging 'Nathanaël', een christelijke jeugdvereniging in Nederland, onderdeel van de HHK (Hersteld Hervormde Kerk). De belangrijkste functionaliteiten van de applicatie zijn het eenvoudig weergeven van informatie en het registreren voor aankomende activiteiten.  
-
----
 
 ## 📜 Inhoudsopgave  
 
@@ -21,8 +17,6 @@ Ik heb deze applicatie/website gemaakt als een project voor de kerkelijke jeugdv
 5. [Versie](#versie)  
 6. [Contact](#contact)  
 
----
-
 ## 🌟 Functionaliteiten  
 
 - **Aankomende Activiteiten**: Bekijk een lijst met aankomende activiteiten, inclusief datum, beschrijving en locatie.  
@@ -32,8 +26,6 @@ Ik heb deze applicatie/website gemaakt als een project voor de kerkelijke jeugdv
 - **Faciliteitenoverzicht**: Ontdek welke faciliteiten beschikbaar zijn voor evenementen en bijeenkomsten.  
 - **Kerkgeschiedenis**: Leer over de oprichting en groei van de kerk, inclusief belangrijke mijlpalen.  
 - **Contact en Vragen**: Vind contactgegevens van de vereniging, inclusief e-mailadressen en namen.  
-
----
 
 ## 💻 Tech Stack  
 
@@ -46,8 +38,6 @@ De applicatie maakt gebruik van moderne technologieën voor optimale prestaties 
 - **ShadCN**: UI-stylingbibliotheek voor toegankelijke en modulaire componenten.  
 - **React-Icons**: Uitgebreide iconenbibliotheek voor een visueel consistente UI.  
 
----
-
 ## 📄 Pagina's  
 
 - **Algemeen**: De startpagina met informatie over de jeugdvereniging en een overzicht van aankomende activiteiten.  
@@ -57,19 +47,13 @@ De applicatie maakt gebruik van moderne technologieën voor optimale prestaties 
 - **Contact**: Contactgegevens, inclusief e-mailadressen en namen.  
 - **Activiteiten**: Overzicht van alle aankomende activiteiten, inclusief de mogelijkheid om je aan te melden en meer details te bekijken.  
 
----
-
 ## 📄 Licentie  
 
 Dit project valt onder de [MIT-licentie](LICENSE), waardoor hergebruik en aanpassing met naamsvermelding is toegestaan.  
 
----
-
 ## 📌 Versie  
 
 Huidige versie: **v1.0**  
-
----
 
 ## 📬 Contact  
 
@@ -77,20 +61,15 @@ Vragen, feedback of gewoon even hallo zeggen? Neem contact op via [devlamper06@g
 
 Bedankt voor het bekijken van dit project! :D  
 
-
 ---
 
 ## English Version
 
 A website/application for the youth association **Nathanael**
 
----
-
 ## About
 
 I created this application/website as a project for the church youth association 'Nathanael', a Christian youth association in the Netherlands, part of the HHK (Hersteld Hervormde Kerk). The main functionality of the application is displaying information easily understandable for the user and registering for upcoming events. 
-
----
 
 ## 📜 Table of Contents
 
@@ -101,8 +80,6 @@ I created this application/website as a project for the church youth association
 5. [Version](#version)
 6. [Contact](#contact)
 
----
-
 ## 🌟 Features
 
 - **Upcoming Activities**: View a list of upcoming activities, with detailed information on each event, including date, description, and location.
@@ -112,8 +89,6 @@ I created this application/website as a project for the church youth association
 - **Facilities Overview**: Discover the facilities available for events and gatherings, including location details and amenities.
 - **Church History**: Explore the story of the church's foundation and growth, including key milestones and historical events.
 - **Contact and Inquiries**: Access contact information for the organization, including emails and names for direct communication.
-
----
 
 ## 💻 Tech Stack
 
@@ -126,8 +101,6 @@ The application uses modern technologies to provide an optimal performance and u
 - **ShadCN**: UI styling library for modular and accessible components, ensuring a cohesive design.
 - **React-Icons**: Extensive icon library to improve visual consistency in the UI.
 
----
-
 ## 📄 Pages
 
 - **Algemeen**: The main page featuring information about the youth organization and a grid displaying the upcoming activities, highlighting key events and initiatives.
@@ -137,19 +110,13 @@ The application uses modern technologies to provide an optimal performance and u
 - **Contact**: A page with contact information, including email and names.
 - **Activiteiten**: On this page, you can see all the upcoming activities. The user also has the ability to click on a specific activity and sign up for one, with detailed information on each event and registration options.
 
----
-
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE), allowing for reuse and modification with attribution.
 
----
-
 ## 📌 Version
 
 Current Version: **v1.0**
-
----
 
 ## 📬 Contact
 
