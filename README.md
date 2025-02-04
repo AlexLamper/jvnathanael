@@ -1,4 +1,86 @@
-# 📖 Jv - Nathanael
+# 📖 Jv - Nathanaël
+
+## Nederlandse Versie
+
+Een website/applicatie voor de jeugdvereniging **Nathanaël**  
+
+---
+
+## Over  
+
+Ik heb deze applicatie/website gemaakt als een project voor de kerkelijke jeugdvereniging 'Nathanaël', een christelijke jeugdvereniging in Nederland, onderdeel van de HHK (Hersteld Hervormde Kerk). De belangrijkste functionaliteiten van de applicatie zijn het eenvoudig weergeven van informatie en het registreren voor aankomende activiteiten.  
+
+---
+
+## 📜 Inhoudsopgave  
+
+1. [Functionaliteiten](#functionaliteiten)  
+2. [Tech Stack](#tech-stack)  
+3. [Pagina's](#paginas)  
+4. [Licentie](#licentie)  
+5. [Versie](#versie)  
+6. [Contact](#contact)  
+
+---
+
+## 🌟 Functionaliteiten  
+
+- **Aankomende Activiteiten**: Bekijk een lijst met aankomende activiteiten, inclusief datum, beschrijving en locatie.  
+- **Activiteitenregistratie**: Meld je eenvoudig aan voor specifieke activiteiten via de website.  
+- **Herinneringen**: Ontvang tijdige herinneringen voor activiteiten zodat je niets mist.  
+- **Bestuursinformatie**: Lees meer over het bestuur van de jeugdvereniging, hun rollen en bijdragen.  
+- **Faciliteitenoverzicht**: Ontdek welke faciliteiten beschikbaar zijn voor evenementen en bijeenkomsten.  
+- **Kerkgeschiedenis**: Leer over de oprichting en groei van de kerk, inclusief belangrijke mijlpalen.  
+- **Contact en Vragen**: Vind contactgegevens van de vereniging, inclusief e-mailadressen en namen.  
+
+---
+
+## 💻 Tech Stack  
+
+De applicatie maakt gebruik van moderne technologieën voor optimale prestaties en gebruikerservaring:  
+
+- **Next.js (TypeScript)**: Het framework voor de applicatie, met ondersteuning voor server-side rendering en statische generatie.  
+- **Vercel**: Hosting- en deployplatform geoptimaliseerd voor Next.js-applicaties.  
+- **TailwindCSS**: Utility-first CSS-framework voor snelle en consistente styling.  
+- **RelumeUI**: UI-bibliotheek met herbruikbare componenten voor een consistente vormgeving.  
+- **ShadCN**: UI-stylingbibliotheek voor toegankelijke en modulaire componenten.  
+- **React-Icons**: Uitgebreide iconenbibliotheek voor een visueel consistente UI.  
+
+---
+
+## 📄 Pagina's  
+
+- **Algemeen**: De startpagina met informatie over de jeugdvereniging en een overzicht van aankomende activiteiten.  
+- **Bestuur**: Een pagina met informatie over de bestuursleden, hun rollen en bijdragen.  
+- **Huisvesting**: Informatie over de beschikbare faciliteiten voor de jeugdvereniging, inclusief locaties.  
+- **Ontstaan**: Een pagina met de geschiedenis en oprichting van de kerk.  
+- **Contact**: Contactgegevens, inclusief e-mailadressen en namen.  
+- **Activiteiten**: Overzicht van alle aankomende activiteiten, inclusief de mogelijkheid om je aan te melden en meer details te bekijken.  
+
+---
+
+## 📄 Licentie  
+
+Dit project valt onder de [MIT-licentie](LICENSE), waardoor hergebruik en aanpassing met naamsvermelding is toegestaan.  
+
+---
+
+## 📌 Versie  
+
+Huidige versie: **v1.0**  
+
+---
+
+## 📬 Contact  
+
+Vragen, feedback of gewoon even hallo zeggen? Neem contact op via [devlamper06@gmail.com](mailto:devlamper06@gmail.com).  
+
+Bedankt voor het bekijken van dit project! :D  
+
+
+---
+
+## English Version
 
 A website/application for the youth association **Nathanael**
 
