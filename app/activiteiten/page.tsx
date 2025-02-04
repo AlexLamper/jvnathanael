@@ -98,7 +98,7 @@ const ActiviteitenPage = () => {
             </Card>
           ) : (
             activiteiten?.map((activiteit) => (
-              <Card key={activiteit._id.toString()} className="hover:shadow-lg transition-shadow">
+              <Card key={activiteit._id.toString()} className="hover:shadow-lg transition-shadow bg-white">
                 <CardHeader>
                   <CardTitle className="text-xl font-bold text-[#3A3C70]">{activiteit.name}</CardTitle>
                 </CardHeader>
